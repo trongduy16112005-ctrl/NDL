@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ Sơ Năng Lực - Nhóm Phát Triển</title>
+    <link rel="stylesheet" href="Style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <span class="logo-text">TEAM</span> <span class="logo-highlight">ĐỘC LẬP - TỰ DO - HÀNH PHÚC</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#hero">Trang Chủ</a></li>
+                    <li><a href="#team-list">Đội Ngũ</a></li>
+                    <li><a href="#">Liên Hệ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section" id="hero">
+            <canvas id="waveCanvas"></canvas> 
+            <div class="hero-content">
+                <h1 id="hero-title">
+                    <span class="word">Sáng Tạo</span>
+                    <span class="word"> - </span>
+                    <span class="word">Phát Triển</span>
+                    <span class="word"> - </span>
+                    <span class="word">Kết Nối</span>
+                </h1>
+                <p class="hero-slogan animate__animated animate__fadeInUp animate__delay-0.5s">
+                    Đội ngũ trẻ, năng động. Chúng tôi biến ý tưởng của bạn thành sản phẩm công nghệ thực tế.
+                </p>
+                <div class="hero-actions">
+                    <a href="#team-list" class="btn btn-primary">Khám Phá Đội Ngũ</a> 
+                    <a href="#team-list" class="btn btn-secondary">Gặp Gỡ Đội Ngũ</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="team-list-section" id="team-list">
+            <h2 class="section-title">Đội Ngũ Thành Viên</h2>
+            <p class="section-subtitle">Gặp gỡ những người kiến tạo nên sản phẩm của bạn.</p>
+            <nav class="team-nav-container">
+                <ul>
+                    <li><a href="phuoc.html" class="member-link">Nguyễn Trọng Phước</a></li>
+                    <li><a href="hieu.html" class="member-link member-key">Nguyễn Quang Hiếu (Thành viên chủ chốt)</a></li>
+                    <li><a href="kha.html" class="member-link">Nguyễn Thanh Kha</a></li>
+                    <li><a href="tien.html" class="member-link">Lê Trọng Tiến</a></li>
+                    <li><a href="duy.html" class="member-link member-leader">Trương Trọng Duy (Trưởng nhóm)</a></li>
+                </ul>
+            </nav>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <span class="logo-text">TEAM</span> <span class="logo-highlight">ĐỘC LẬP - TỰ DO - HẠNH PHÚC</span>
+                <p class="copyright">© 2025 Team Solutions. Mọi quyền được bảo lưu.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Đường dẫn nhanh</h3>
+                <ul>
+                    <li><a href="#hero">Trang Chủ</a></li>
+                    <li><a href="#team-list">Đội Ngũ</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3>Liên hệ</h3>
+                <p>Email: trongduy16112005@gmail.com</p>
+                <p>Điện thoại: 0912092109</p>
+            </div>
+        </div>
+    </footer>
+    <script src="javsa.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const words = document.querySelectorAll('#hero-title .word');
+            words.forEach((word, index) => {
+                // Áp dụng kiểu dáng ban đầu
+                word.style.opacity = '0';
+                word.style.transform = 'translateY(20px)';
+                
+                // Kích hoạt animation sau một khoảng thời gian
+                setTimeout(() => {
+                    word.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+                    word.style.opacity = '1';
+                    word.style.transform = 'translateY(0)';
+                }, 200 * index); // 200ms độ trễ giữa các từ
+            });
+        });
+    </script>
+</body>
+</html>

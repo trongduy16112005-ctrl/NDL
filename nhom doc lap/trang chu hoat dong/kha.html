@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nguyễn Thanh Kha - Hồ sơ cá nhân</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    /* 🌈 Nền chuyển màu động */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(-45deg, #e3f2fd, #bbdefb, #90caf9, #64b5f6);
+      background-size: 400% 400%;
+      animation: gradientShift 10s ease infinite;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* 📦 Khung chính */
+    .container {
+      max-width: 850px;
+      background: #fff;
+      margin: 60px auto;
+      padding: 40px 50px;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+      text-align: center;
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 🖼 Ảnh đại diện */
+    img.avatar {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #1a73e8;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 15px rgba(26, 115, 232, 0.3);
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+
+    img.avatar:hover {
+      transform: rotate(5deg) scale(1.08);
+      box-shadow: 0 6px 20px rgba(26, 115, 232, 0.6);
+    }
+
+    /* 💬 Tên và tiêu đề */
+    h1 {
+      color: #1a73e8;
+      margin: 0;
+      font-size: 30px;
+      animation: fadeSlide 1s ease forwards;
+    }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ✍️ Hiệu ứng gõ chữ */
+    .typing {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 25px;
+      opacity: 0.9;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 3px solid #1a73e8;
+      width: 0;
+      animation: typing 4s steps(40) 1s forwards, blink 0.75s step-end infinite;
+    }
+
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    /* 📄 Các section */
+    .section {
+      text-align: left;
+      margin-top: 25px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s ease;
+    }
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    h2 {
+      color: #1a73e8;
+      border-left: 5px solid #1a73e8;
+      padding-left: 10px;
+      margin-bottom: 10px;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    ul li {
+      margin: 5px 0;
+      position: relative;
+      padding-left: 20px;
+      transition: all 0.3s ease;
+    }
+
+    ul li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #1a73e8;
+      font-weight: bold;
+    }
+
+    /* 🌟 Hiệu ứng hover cho kỹ năng */
+    ul li:hover {
+      color: #1a73e8;
+      transform: translateX(5px);
+    }
+
+    /* 🔗 Nút mạng xã hội */
+    .socials {
+      margin-top: 30px;
+    }
+
+    .socials a {
+      text-decoration: none;
+      color: white;
+      background: #1a73e8;
+      padding: 10px 20px;
+      border-radius: 30px;
+      margin: 5px;
+      display: inline-block;
+      transition: all 0.3s ease;
+      box-shadow: 0 3px 10px rgba(26,115,232,0.2);
+    }
+
+    .socials a:hover {
+      background: #155ab6;
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 5px 15px rgba(26,115,232,0.4);
+    }
+
+    .footer {
+      margin-top: 40px;
+      color: #888;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="hinh/kha.jpg.jpg" alt="Ảnh đại diện" class="avatar">
+    <h1>Nguyễn Thanh Kha</h1>
+    <p class="typing">Sinh viên năm 2 ngành Công nghệ Thông tin · Đại học Bình Dương</p>
+
+    <div class="section">
+      <h2>Giới thiệu bản thân</h2>
+      <p>Tôi là sinh viên năm 2 ngành Công nghệ Thông tin tại Đại học Bình Dương, có niềm đam mê với công nghệ, sáng tạo và thiết kế. Tôi luôn tìm kiếm cơ hội để học hỏi, phát triển bản thân và áp dụng kiến thức vào thực tế.</p>
+    </div>
+
+    <div class="section">
+      <h2>Kỹ năng</h2>
+      <ul>
+        <li>Sáng tạo trong tư duy và thiết kế</li>
+        <li>Biết decor và trình bày nội dung trực quan</li>
+        <li>Kỹ năng giao tiếp và làm việc nhóm</li>
+        <li>Tinh thần học hỏi cao, khám phá công nghệ mới</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Sở thích</h2>
+      <ul>
+        <li>Chơi thể thao, đặc biệt là cầu lông 🏸</li>
+        <li>Yêu động vật, nhất là mèo 🐱</li>
+        <li>Thiết kế, trang trí và sáng tạo không gian</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Định hướng nghề nghiệp</h2>
+      <p>Mục tiêu của tôi là trở thành lập trình viên front-end có tư duy sáng tạo, kết hợp công nghệ và thẩm mỹ để tạo ra sản phẩm web đẹp mắt, thân thiện người dùng.</p>
+    </div>
+
+    <div class="socials">
+      <a href="#">Facebook</a>
+      <a href="#">GitHub</a>
+      <a href="#">LinkedIn</a>
+    </div>
+
+    <div class="footer">
+      © 2025 Nguyễn Thanh Kha
+    </div>
+  </div>
+
+  <script>
+    // ✨ Hiệu ứng hiện dần khi cuộn
+    const sections = document.querySelectorAll('.section');
+    window.addEventListener('scroll', () => {
+      const triggerBottom = window.innerHeight * 0.8;
+      sections.forEach(sec => {
+        const top = sec.getBoundingClientRect().top;
+        if (top < triggerBottom) sec.classList.add('visible');
+      });
+    });
+  </script>
+</body>
+</html>
