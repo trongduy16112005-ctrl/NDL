@@ -1,0 +1,235 @@
+/* RESET CƠ BẢN */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    background-color: #1a1a2e; /* Nền trang: Xanh Navy/Tím than đậm */
+    color: #f4f4f4; /* Màu chữ: Trắng/Xám rất nhạt */
+    padding-top: 60px;
+    animation: fadeIn 1s ease-out;
+}
+
+/* KEYFRAMES TỔNG THỂ */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes float {
+	0% { transform: translateY(0); }
+	50% { transform: translateY(-5px); }
+	100% { transform: translateY(0); }
+}
+
+/* HEADER/FOOTER */
+.header {
+    background-color: #0f0f18; /* Header màu đậm hơn nữa */
+    color: #ff4a68; /* Màu nhấn rực rỡ */
+    padding: 15px 20px;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    transition: box-shadow 0.3s ease;
+}
+
+.footer {
+    background-color: #0f0f18; /* Footer màu đậm hơn */
+    color: #f4f4f4;
+    text-align: center;
+    padding: 15px 20px;
+    margin-top: 30px;
+    font-size: 0.9em;
+    animation: float 4s ease-in-out infinite;
+}
+
+/* MAIN CONTAINER */
+.main-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+/* PHẦN TÓM TẮT (Ảnh & Liên hệ) */
+.profile-summary {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 40px;
+    padding: 30px;
+    background-color: #2c394b; /* Nền thẻ: Xanh Đen/Xám đậm */
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    margin-bottom: 30px;
+    transition: transform 0.3s ease;
+}
+.profile-summary:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+}
+
+/* PHOTOS */
+.main-photo {
+    width: 200px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 5px solid #ff4a68; /* Viền ảnh màu nhấn */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+/* Sub-photo giữ nguyên hiệu ứng fade-in */
+.sub-photo {
+    width: 150px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    opacity: 0;
+    transform: translateX(-50px);
+    align-self: flex-end; 
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.sub-photo.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+.main-photo:hover {
+    transform: scale(1.05) rotate(1deg);
+    box-shadow: 0 8px 20px rgba(255, 74, 104, 0.5); /* Bóng đổ màu nhấn */
+}
+
+.contact-social h2 {
+    color: #ff4a68; /* Tiêu đề màu nhấn */
+}
+
+.icon {
+    color: #ff4a68; /* Icon màu nhấn */
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+/* Hiệu ứng ANIMATION cho Social Link */
+@keyframes wobble {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-5px); }
+  30% { transform: translateX(5px); }
+  45% { transform: translateX(-3px); }
+  60% { transform: translateX(3px); }
+}
+
+.social-link {
+    text-decoration: none;
+    color: #f4f4f4; /* Link màu sáng */
+    transition: color 0.3s ease, transform 0.3s ease;
+    display: inline-block;
+    padding: 5px 0;
+}
+
+.social-link:hover {
+    color: #ff4a68; /* Link màu nhấn khi hover */
+    text-decoration: underline;
+    animation: wobble 0.6s ease-in-out; 
+}
+
+/* Màu sắc riêng cho từng mạng xã hội */
+.social-link:hover .fab.fa-facebook { color: #5d93ff; } /* Facebook màu xanh sáng hơn để tương phản */
+.social-link:hover .fab.fa-linkedin { color: #5d93ff; }
+.social-link:hover .fab.fa-github { color: #ffffff; }
+
+
+/* PHẦN CHI TIẾT (Sở thích & Ưu điểm) - SỬ DỤNG GRID LAYOUT */
+.details-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.info-card {
+    background-color: #2c394b; /* Nền thẻ: Xanh Đen/Xám đậm */
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    border-left: 5px solid #ff4a68; /* Đường viền màu nhấn */
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.info-card:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+    transform: scale(1.02);
+    border-left-color: #fff078; /* Đổi màu viền khi hover sang màu Vàng sáng */
+}
+
+.info-card h2 {
+    color: #ff4a68; /* Tiêu đề thẻ màu nhấn */
+    margin-bottom: 15px;
+    border-bottom: 2px solid #3c4a5c;
+    padding-bottom: 10px;
+}
+
+.advantage-item {
+    margin-bottom: 15px;
+    padding-left: 10px;
+    border-left: 3px solid #6c757d; 
+    transition: border-left-color 0.3s ease;
+}
+
+.advantage-item:hover {
+    border-left-color: #fff078; /* Nhấn mạnh ưu điểm bằng màu Vàng sáng */
+}
+
+.advantage-item h3 {
+    color: #f4f4f4; /* Tiêu đề ưu điểm màu sáng */
+    margin-bottom: 5px;
+}
+.advantage-item p {
+    color: #ccc; /* Giảm độ sáng của mô tả */
+}
+
+
+/* NÚT DOWNLOAD CV - Hiệu ứng 3D màu Cam Đào/Đỏ */
+.download-btn {
+    display: inline-block;
+    background-color: #ff4a68; 
+    color: #1a1a2e; /* Chữ đậm để tương phản */
+    padding: 12px 25px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-top: 20px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 0px #c83b54; /* Hiệu ứng 3D */
+}
+
+.download-btn:active {
+    background-color: #c83b54;
+    transform: translateY(5px); 
+    box-shadow: 0 0px 0px #c83b54; 
+}
+
+/* RESPONSIVE CƠ BẢN */
+@media (max-width: 768px) {
+    .profile-summary {
+        flex-direction: column; 
+        text-align: center;
+        gap: 20px;
+    }
+
+    .profile-photos {
+        justify-content: center; 
+    }
+    
+    .main-photo, .sub-photo {
+        width: 150px; 
+        height: auto;
+    }
+}

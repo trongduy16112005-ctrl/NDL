@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ Sơ Cá Nhân | Trương Trọng Duy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        // Áp dụng font Times New Roman
+                        'serif': ['Times New Roman', 'Times', 'serif'],
+                    },
+                    colors: {
+                        // Màu Đỏ chủ đạo (phù hợp với video)
+                        'primary': '#E32636', // Đỏ Cổ Điển
+                        // Màu Vàng/Cam phụ để tạo điểm nhấn hiện đại
+                        'secondary': '#FFD700',
+                        // Nền tối (Gần như Đen tuyệt đối)
+                        'dark-bg': '#0D0D0D',
+                        // Thẻ tối/Sidebar tối
+                        'dark-card': '#1C1C1C',
+
+                        // MÀU MỚI CHO SKILL BAR VÀ TIÊU ĐỀ
+                        'skill-pink': '#FF69B4', // Màu Hồng
+                        'skill-purple': '#9333EA', // Màu Tím
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            /* Áp dụng Times New Roman cho toàn bộ body */
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #f0f0f0;
+            transition: background-color 0.5s ease;
+            position: relative; /* Quan trọng cho z-index của canvas */
+            color: #444; /* Màu chữ mặc định cho nền sáng */
+        }
+
+        /* CANVAS STYLING cho hiệu ứng Ngân Hà */
+        #galaxyCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10; /* Đặt ra sau tất cả nội dung */
+            background-color: #00001a;
+        }
+
+        /* Layout Grid */
+        .cv-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+        @media (min-width: 768px) {
+            .cv-grid {
+                grid-template-columns: 3fr 7fr;
+            }
+        }
+
+        /* Hiệu ứng thanh tiến trình (Animation) */
+        .skill-bar {
+            transition: width 1.5s ease-out;
+            animation: skill-load 1.5s ease-out forwards;
+        }
+
+        /* Keyframes cho Animation */
+        @keyframes skill-load {
+            from { width: 0; }
+            to { /* width được set bằng JS */ }
+        }
+
+        /* Hiệu ứng transform/hover */
+        .hover-lift {
+            transition: all 0.3s;
+        }
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Dark Mode Styling */
+        .dark-mode body {
+            background-color: transparent;
+            color: #E0E0E0;
+        }
+        .dark-mode .sidebar {
+            background: #1C1C1C;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
+        }
+        .dark-mode .main-content {
+            background: transparent;
+        }
+        .dark-mode .card {
+            background-color: #1C1C1C;
+            border-color: #333333;
+        }
+
+        /* Thẻ liên hệ sử dụng gradient */
+        .contact-card {
+            background: linear-gradient(135deg, #FFD700, #E32636);
+            color: #1c1c1c;
+            transition: all 0.3s ease;
+        }
+        .contact-card:hover {
+             background: linear-gradient(135deg, #ffc400, #c41e2a);
+        }
+
+        /* ----- HIỆU ỨNG CHỮ CHẠY RA TỪNG CHỮ (Typewriter Effect) ----- */
+        /* Trạng thái ban đầu của nội dung muốn áp dụng typewriter: ẩn */
+        .content-to-animate {
+            opacity: 0;
+            display: block;
+            /* Đảm bảo nội dung không bị dịch chuyển khi chữ chạy ra */
+            min-height: 1.2em;
+        }
+        /* Đảm bảo các thẻ li trong list-inside không bị mất dấu chấm */
+        ul.list-inside li.content-to-animate {
+            display: list-item !important;
+        }
+
+        @keyframes charPopIn {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .char-animate {
+            display: inline-block;
+            opacity: 0;
+            /* Tăng tốc animation PopIn lên 0.2s */
+            animation: charPopIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        /* ----------------------------------------------- */
+
+        /* ----- HIỆU ỨNG TUYẾT RƠI (SNOWFALL EFFECT) ----- */
+        .snowflake {
+            color: #fff;
+            font-size: 1.5em;
+            position: absolute;
+            top: -10px;
+            animation: fall linear infinite, drift alternate infinite;
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            opacity: 0.8;
+            pointer-events: none;
+            transition: opacity 0.5s ease-out;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(100vh); }
+        }
+
+        @keyframes drift {
+            from { transform: translateX(0); }
+            to { transform: translateX(10px); }
+        }
+        /* ----------------------------------------------- */
+
+        /* ----- HIỆU ỨNG CUỘN (SCROLL ANIMATION) - SLIDE-UP FADE-IN ----- */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .scroll-animate.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ----- HIỆU ỨNG ẢNH PROFILE (POP-IN) ----- */
+        @keyframes imagePopIn {
+            0% { opacity: 0; transform: translateY(20px) scale(0.8); }
+            100% { opacity: 1; transform: translateY(-50%) scale(1); } /* Đảm bảo transform cuối cùng là translateY(-50%) để canh giữa */
+        }
+        #profileImage {
+            position: absolute;
+            top: 50%; /* Đặt giữa chiều cao của banner */
+            right: 8%; /* Cách mép phải */
+            transform: translateY(-50%); /* Canh giữa dọc, transform này sẽ bị ghi đè bởi animation */
+            max-width: 180px; /* Kích thước tối đa trên màn hình lớn */
+            height: auto;
+            opacity: 0; /* Ẩn ban đầu */
+            z-index: 20; /* Đảm bảo nằm trên lớp tuyết và nền */
+            /* Áp dụng animation */
+            animation: imagePopIn 1.0s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            animation-delay: 1.5s; /* Chạy sau khi tiêu đề và phụ đề hiện ra */
+        }
+        /* Ẩn trên màn hình nhỏ để tránh vỡ layout */
+        @media (max-width: 768px) {
+            #profileImage {
+                display: none;
+            }
+        }
+        /* ----------------------------------------------- */
+
+        /* ----- SỬA LIGHTBOX CHO DỰ ÁN (Mới) ----- */
+        #lightboxImage {
+            /* Giới hạn kích thước tối đa để ảnh không quá lớn, nhưng vẫn căn giữa */
+            max-width: 70%; /* Giảm từ 90% xuống 70% */
+            max-height: 80%; /* Giảm từ 90% xuống 80% */
+            width: auto; /* Chiều rộng tự động */
+            height: auto; /* Chiều cao tự động */
+            object-fit: contain;
+            cursor: pointer;
+            /* Giữ nguyên các thuộc tính căn giữa flexbox trên #lightbox */
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+
+    <canvas id="galaxyCanvas"></canvas>
+
+    <nav id="navbar" class="sticky top-0 z-40 bg-white shadow-md dark:bg-dark-card dark:shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <span class="text-2xl font-extrabold text-primary">Duy.DEV</span>
+                <div class="flex items-center space-x-6">
+                    <a href="#about" class="text-gray-700 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition font-medium">Giới Thiệu</a>
+                    <a href="#skills" class="text-gray-700 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition font-medium">Kỹ Năng</a>
+                    <a href="#projects" class="text-gray-700 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition font-medium">Dự Án</a>
+                    <button id="themeToggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-card transition">
+                        <svg id="moonIcon" class="w-6 h-6 text-gray-800 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                        <svg id="sunIcon" class="w-6 h-6 text-gray-800 dark:text-gray-300 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.354 3.354l-.707-.707M5.646 5.646l-.707-.707M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="w-full bg-gradient-to-r from-dark-bg to-gray-900 py-16 mb-8 shadow-xl relative overflow-hidden">
+        <div id="snow-container" class="absolute inset-0 z-0 pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 text-center z-10 relative">
+            <h1 id="bannerTitle" class="text-4xl sm:text-5xl font-extrabold text-white tracking-wider">PORTFOLIO CÔNG NGHỆ</h1>
+            <p id="bannerSubtitle" class="text-xl text-secondary mt-2">Trương Trọng Duy | Full-stack Developer (Tương lai)</p>
+        </div>
+
+        <img id="profileImage" src="hinh/da xoa nen.png" alt="Ảnh Cá Nhân Đã Xóa Phông" class="rounded-lg shadow-2xl">
+    </div>
+
+    <main class="max-w-7xl mx-auto p-4 sm:p-8 cv-grid gap-8">
+
+        <div class="sidebar bg-white shadow-xl rounded-lg p-6 space-y-8 hover-lift transition md:sticky md:top-20 h-fit dark:bg-dark-card">
+
+            <section class="text-center">
+                <img src="hinh/Duy.jpg" alt="Ảnh Cá Nhân" class="w-28 h-28 object-cover rounded-full mx-auto border-4 border-primary shadow-lg mb-4">
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white">Trương Trọng Duy</h2>
+                <p class="text-skill-pink font-medium mt-1">Nhà Phát Triển Germini</p>
+                <div class="mt-4 border-t pt-4 border-gray-200 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-400">
+                    <p>📍 Đồng Nai, Việt Nam</p>
+                    <p>📧 24050045@student.bdu.edu.vn</p>
+                    <p>📞 0912-092-109</p>
+                </div>
+            </section>
+
+            <section>
+                <h3 class="text-xl font-bold text-gray-800 dark:text-white border-b-2 border-primary pb-2 mb-4">Sở Thích</h3>
+                <ul class="text-gray-600 dark:text-gray-400 space-y-2">
+                    <li class="flex items-center space-x-2">
+                        <span class="text-secondary">✦</span>
+                        <a href="javascript:void(0)" onclick="openPreviewBox('a/z7114403811243_23d00d4b0b3eac3f447fb95ebe0ae66b.jpg')" class="hover:text-primary dark:hover:text-primary transition cursor-pointer">
+                            Khám phá Vũng Tàu.
+                        </a>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <span class="text-secondary">✦</span>
+                        <a href="javascript:void(0)" onclick="openPreviewBox('a/unnamed.png')" class="hover:text-primary dark:hover:text-primary transition cursor-pointer">
+                            Nghiên cứu Công nghệ Asus Ai.
+                        </a>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <span class="text-secondary">✦</span>
+                        <a href="javascript:void(0)" onclick="openPreviewBox('a/2505_hinh-nen-minecraft-may-tinh21.jpg')" class="hover:text-primary dark:hover:text-primary transition cursor-pointer">
+                            Thích chơi game chill như Minecraft.
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </div>
+
+        <div class="main-content space-y-10">
+
+            <section id="about" class="card bg-white shadow-xl rounded-lg p-6 hover-lift transition border border-gray-100 dark:bg-dark-card dark:border-gray-700 scroll-animate">
+                <h2 class="text-2xl font-extrabold text-skill-purple mb-4 content-to-animate">Mục Tiêu & Giới Thiệu</h2>
+                <p class="text-gray-700 dark:text-gray-300 leading-relaxed content-to-animate">
+                    Là sinh viên đam mê công nghệ, em tập trung vào phát triển Frontend với kĩ năng **HTML, CSS (Tailwind)** và **JavaScript**. Mục tiêu hàng đầu của em là trở thành một **Full-stack Developer** chuyên nghiệp trong vòng 2 năm, đồng thời vận dụng kĩ năng **nhận định nhanh** và **phối hợp ăn ý** để đóng góp hiệu quả vào các dự án.
+                </p>
+                <p class="text-sm italic text-gray-500 dark:text-gray-400 mt-3 content-to-animate">
+                    "Kỹ năng cốt lõi là sự nhanh nhẹn và khả năng giải quyết vấn đề bằng logic vững chắc."
+                </p>
+            </section>
+
+            <section id="skills" class="card bg-white shadow-xl rounded-lg p-6 hover-lift transition border border-gray-100 dark:bg-dark-card dark:border-gray-700 scroll-animate">
+                <h2 class="text-2xl font-extrabold text-skill-purple mb-6">Bộ Kỹ Năng Chuyên Môn</h2>
+                <div class="space-y-4">
+                    <div class="skill-item">
+                        <div class="flex justify-between mb-1 text-gray-700 dark:text-gray-300">
+                            <span class="font-medium">HTML5 & CSS3</span><span class="font-bold text-skill-pink">90%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                            <div class="bg-skill-pink h-2.5 rounded-full skill-bar" data-progress="90" style="width: 0;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="flex justify-between mb-1 text-gray-700 dark:text-gray-300">
+                            <span class="font-medium">JavaScript (ES6+)</span><span class="font-bold text-skill-purple">75%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                            <div class="bg-skill-purple h-2.5 rounded-full skill-bar" data-progress="75" style="width: 0;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="flex justify-between mb-1 text-gray-700 dark:text-gray-300">
+                            <span class="font-medium">React.js & Node.js</span><span class="font-bold text-skill-pink">60%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                            <div class="bg-skill-pink h-2.5 rounded-full skill-bar" data-progress="60" style="width: 0;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="flex justify-between mb-1 text-gray-700 dark:text-gray-300">
+                            <span class="font-medium">Thiết Kế UI/UX & Figma</span><span class="font-bold text-skill-purple">80%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                            <div class="bg-skill-purple h-2.5 rounded-full skill-bar" data-progress="80" style="width: 0;"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card bg-white shadow-xl rounded-lg p-6 hover-lift transition border border-gray-100 dark:bg-dark-card dark:border-gray-700 scroll-animate">
+                <h2 class="text-2xl font-extrabold text-skill-purple mb-6 content-to-animate">Học vấn & Thông tin Chi tiết</h2>
+                <div class="space-y-6 text-gray-700 dark:text-gray-300">
+                    <div>
+                        <p class="font-semibold text-lg text-gray-800 dark:text-white content-to-animate">Trường Đại học Bình Dương</p>
+                        <p class="text-skill-pink font-medium mt-1 content-to-animate">Cử nhân Công nghệ Thông tin (2024 - Hiện tại)</p>
+                        <ul class="list-disc list-inside text-sm mt-2 ml-4 text-gray-600 dark:text-gray-400">
+                            <li class="content-to-animate">Chuyên ngành: Phát triển Phần mềm.</li>
+                            <li class="content-to-animate">GPA hiện tại: 2.94/4.0.</li>
+                            <li class="content-to-animate">Các môn học chuyên sâu: Cấu trúc Dữ liệu & Giải thuật, Phát triển Web, Cơ sở Dữ liệu.</li>
+                        </ul>
+                    </div>
+                    <div class="border-t pt-4 border-gray-200 dark:border-gray-700">
+                        <p class="font-semibold text-lg text-gray-800 dark:text-white mb-2 content-to-animate">Thông tin cá nhân</p>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex justify-between">
+                                <span class="font-medium text-secondary">Ngày sinh:</span>
+                                <span>16/11/2005</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span class="font-medium text-secondary">Tình trạng:</span>
+                                <span>Đang học</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span class="font-medium text-secondary">Ngôn ngữ:</span>
+                                <span>Tiếng Việt, Tiếng Anh, Hán Tự</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="projects" class="card bg-white shadow-xl rounded-lg p-6 hover-lift transition border border-gray-100 dark:bg-dark-card dark:border-gray-700 scroll-animate">
+                <h2 class="text-2xl font-extrabold text-skill-purple mb-6 content-to-animate">Dự Án Tiêu Biểu</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-inner">
+                        <a href="javascript:void(0)" onclick="openLightbox('a/Screenshot 2025-10-28 080826.png')">
+                            <img src="hinh/Screenshot 2025-10-28 080826.png" alt="Dự án Web Hồ Sơ cá nhân" class="w-full h-24 object-cover rounded-md mb-3 border-2 border-primary/50 cursor-zoom-in hover:opacity-80 transition">
+                        </a>
+                        <h4 class="font-semibold text-lg text-gray-800 dark:text-white">Dự án Web Hồ Sơ cá nhân</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Sử dụng HTML/CSS/JS. Để lập trình ra một trang web cá nhân.</p>
+                    </div>
+                    <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-inner">
+                        <a href="javascript:void(0)" onclick="openLightbox('a/Screenshot 2025-10-28 081046.png')">
+                            <img src="hinh/Screenshot 2025-10-28 081046.png" alt="Dự án phát triển Servers Minecraft Sinh Tồn" class="w-full h-24 object-cover rounded-md mb-3 border-2 border-primary/50 cursor-zoom-in hover:opacity-80 transition">
+                        </a>
+                        <h4 class="font-semibold text-lg text-gray-800 dark:text-white">Dự án phát triển Servers Minecraft Sinh Tồn </h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Sử dụng Java cơ bản. Tạo lệnh cmd gắn vô máy trạm hoạt động 24/7</p>
+                    </div>
+                    <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-inner">
+                        <a href="javascript:void(0)" onclick="openLightbox('a/Screenshot 2025-10-28 081418.png')">
+                            <img src="hinh/Screenshot 2025-10-28 081418.png" alt="Dự án phát triển một ứng dụng sửa xe Sông Hoàng Tiền" class="w-full h-24 object-cover rounded-md mb-3 border-2 border-primary/50 cursor-zoom-in hover:opacity-80 transition">
+                        </a>
+                        <h4 class="font-semibold text-lg text-gray-800 dark:text-white">Dự án phát triển một ứng dụng sửa xe Sông Hoàng Tiền</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Sử dụng WPF. Tạo ra một ứng dụng có thể sử dụng để lưu trữ các thông tin khách hàng</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <section id="contact" class="bg-gray-800 dark:bg-dark-bg py-12 mt-10">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-extrabold text-white mb-8">KẾT NỐI VỚI TÔI</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <a href="https://www.facebook.com/trong.duy.544588/" target="_blank" class="contact-card p-6 rounded-lg font-bold text-lg hover-lift transition">
+                    <span class="text-3xl">📘</span><p>Facebook</p>
+                </a>
+                <a href="https://github.com/your-github-profile" target="_blank" class="contact-card p-6 rounded-lg font-bold text-lg hover-lift transition">
+                    <span class="text-3xl">💻</span><p>GitHub</p>
+                </a>
+                <a href="http://discord.com/channels/@me" target="_blank" class="contact-card p-6 rounded-lg font-bold text-lg hover-lift transition">
+                    <span class="text-3xl">🎮</span><p>Discord</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-center py-4 bg-gray-900 dark:bg-black text-gray-400 text-sm">
+        © 2025 Trương Trọng Duy - 24050045.
+    </footer>
+
+    <div id="imagePreviewBox" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 p-4 bg-white shadow-2xl rounded-lg border-4 border-primary hidden dark:bg-dark-card transition-all duration-300" style="max-width: 300px; max-height: 300px;">
+        <img id="previewImage" src="" alt="Hình ảnh xem trước" class="w-full h-full object-contain rounded-md">
+        <button onclick="closePreviewBox()" class="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-primary text-white font-bold text-lg leading-none hover:bg-red-700 transition">&times;</button>
+    </div>
+    <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-90 z-50 flex justify-center items-center hidden transition-opacity duration-300 opacity-0" onclick="closeLightbox()">
+        <button class="absolute top-4 right-4 text-white text-4xl font-light leading-none opacity-80 hover:opacity-100 transition">&times;</button>
+        <img id="lightboxImage" src="" alt="Hình ảnh Dự Án Phóng To" onclick="event.stopPropagation()">
+    </div>
+    <script>
+        // Hàm áp dụng hiệu ứng đánh máy (typewriter effect) - NHẬN VÀO ELEMENT
+        function applyTypewriterEffect(element) {
+            if (!element || element.hasAttribute('data-animated')) return;
+            element.setAttribute('data-animated', 'true');
+
+            const text = element.textContent;
+            // Xóa nội dung gốc để thay bằng các span
+            element.textContent = '';
+
+            // Đảm bảo element hiện lên (vì .content-to-animate ẩn nó)
+            element.style.opacity = '1';
+
+            let delay = 0.0;
+            const fragment = document.createDocumentFragment();
+
+            for (let char of text) {
+                const span = document.createElement('span');
+                span.textContent = char;
+                span.classList.add('char-animate');
+
+                if (char === ' ') {
+                    span.innerHTML = '&nbsp;';
+                }
+
+                span.style.animationDelay = `${delay}s`;
+                fragment.appendChild(span);
+
+                // Tốc độ đánh máy: 0.02s/ký tự
+                delay += 0.02;
+            }
+
+            element.appendChild(fragment);
+        }
+
+        // Hàm áp dụng hiệu ứng cho nội dung bên trong một thẻ (Card)
+        function handleCardContentAnimation(cardElement) {
+            const contentElements = cardElement.querySelectorAll('.content-to-animate');
+            let initialDelay = 0;
+
+            contentElements.forEach((el, index) => {
+                const delay = index * 0.15 + initialDelay;
+
+                setTimeout(() => {
+                    applyTypewriterEffect(el);
+                }, delay * 1000);
+            });
+        }
+
+
+        // Hàm tạo một bông tuyết đơn lẻ (để tái tạo liên tục)
+        function createSingleSnowflake(container, containerHeight, containerWidth, snowflakeContent) {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            const content = snowflakeContent[Math.floor(Math.random() * snowflakeContent.length)];
+            snowflake.textContent = content;
+
+            const startX = Math.random() * containerWidth;
+            snowflake.style.left = `${startX}px`;
+
+            const size = Math.random() * 0.8 + 0.7;
+            snowflake.style.fontSize = `${size}em`;
+
+            const duration = Math.random() * 10 + 5;
+            const index = Math.floor(Math.random() * 1000);
+
+            const fallKeyframesName = `fall-single-${index}-${Date.now()}`;
+
+            const styleSheet = document.styleSheets[0];
+            const fallKeyframeRule = `@keyframes ${fallKeyframesName} {
+                from { transform: translateY(-10px); opacity: 0; }
+                2% { opacity: 0.8; }
+                98% { opacity: 0.8; }
+                to { transform: translateY(${containerHeight + 10}px); opacity: 0; }
+            }`;
+            try {
+                styleSheet.insertRule(fallKeyframeRule, styleSheet.cssRules.length);
+            } catch (e) {
+                 // Bỏ qua lỗi nếu keyframes đã tồn tại
+            }
+
+
+            snowflake.style.animationName = `${fallKeyframesName}, drift`;
+            snowflake.style.animationDuration = `${duration}s, ${Math.random() * 3 + 2}s`;
+            snowflake.style.animationDelay = `0s`;
+
+            container.appendChild(snowflake);
+
+            snowflake.addEventListener('animationend', (e) => {
+                if (e.animationName.startsWith('fall-single')) {
+                    snowflake.remove();
+                    // Tái tạo bông tuyết khi nó biến mất
+                    createSingleSnowflake(container, containerHeight, containerWidth, snowflakeContent);
+                }
+            });
+        }
+
+        // Hàm tạo và thả tuyết
+        function createSnowfall(containerId, count) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            const containerHeight = window.innerHeight;
+            const containerWidth = container.offsetWidth;
+            const snowflakeContent = ['❅', '❆', '❉', '❄', '✶'];
+
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    createSingleSnowflake(container, containerHeight, containerWidth, snowflakeContent);
+                }, Math.random() * 5000);
+            }
+        }
+
+        // Hàm thiết lập Intersection Observer cho hiệu ứng cuộn tuần tự
+        function setupScrollAnimation() {
+            const animateElements = [
+                document.getElementById('about'),
+                document.getElementById('skills'),
+                document.querySelector('.main-content > section:nth-child(3)'),
+                document.getElementById('projects')
+            ].filter(el => el !== null);
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+
+                for (let i = 0; i < animateElements.length; i++) {
+                    const target = animateElements[i];
+
+                    const entry = entries.find(e => e.target === target);
+
+                    if (entry && entry.isIntersecting) {
+                        if (!entry.target.classList.contains('is-visible')) {
+
+                            const delay = (i) * 0.2;
+                            entry.target.style.transitionDelay = `${delay}s`;
+                            entry.target.classList.add('is-visible');
+
+                            if (entry.target.id !== 'skills') {
+                                setTimeout(() => {
+                                    handleCardContentAnimation(entry.target);
+                                }, (delay + 0.5) * 1000);
+                            }
+
+                            observer.unobserve(entry.target);
+                        }
+                    }
+                }
+            }, observerOptions);
+
+            animateElements.forEach(el => {
+                el.classList.add('scroll-animate');
+                observer.observe(el);
+            });
+        }
+
+
+        // **********************************************
+        // JS MỚI CHO IMAGE PREVIEW BOX (Sở Thích)
+        // **********************************************
+        function openPreviewBox(imageSrc) {
+            const previewBox = document.getElementById('imagePreviewBox');
+            const previewImage = document.getElementById('previewImage');
+
+            previewImage.src = imageSrc;
+            previewBox.classList.remove('hidden');
+
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePreviewBox() {
+            const previewBox = document.getElementById('imagePreviewBox');
+            previewBox.classList.add('hidden');
+
+            document.body.style.overflow = '';
+        }
+
+        // **********************************************
+        // JS CŨ CHO LIGHTBOX MODAL (Dự Án)
+        // **********************************************
+        function openLightbox(imageSrc) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightboxImage');
+
+            lightboxImage.src = imageSrc;
+            lightbox.classList.remove('hidden');
+
+            setTimeout(() => {
+                lightbox.classList.add('opacity-100');
+            }, 10);
+
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+
+            lightbox.classList.remove('opacity-100');
+
+            setTimeout(() => {
+                lightbox.classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 300);
+        }
+
+        // **********************************************
+        // XỬ LÝ PHÍM ESC
+        // **********************************************
+        document.addEventListener('keydown', (e) => {
+            const previewBox = document.getElementById('imagePreviewBox');
+            const lightbox = document.getElementById('lightbox');
+
+            if (e.key === 'Escape') {
+                if (!lightbox.classList.contains('hidden')) {
+                    closeLightbox();
+                } else if (!previewBox.classList.contains('hidden')) {
+                    closePreviewBox();
+                }
+            }
+        });
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Kích hoạt animation thanh tiến trình
+            const skillBars = document.querySelectorAll('.skill-bar');
+            setTimeout(() => {
+                skillBars.forEach(bar => {
+                    const percentage = bar.getAttribute('data-progress');
+                    bar.style.width = percentage + '%';
+                });
+            }, 100);
+
+            // ÁP DỤNG HIỆU ỨNG CHỮ CHẠY RA TỪNG KÝ TỰ CHO BANNER
+            applyTypewriterEffect(document.getElementById('bannerTitle'));
+
+            setTimeout(() => {
+                applyTypewriterEffect(document.getElementById('bannerSubtitle'));
+            }, 1000);
+
+            // KHỞI TẠO HIỆU ỨNG TUYẾT RƠI
+            setTimeout(() => {
+                createSnowfall('snow-container', 50);
+            }, 500);
+
+            // KHỞI TẠO HIỆU ỨNG CUỘN
+            setupScrollAnimation();
+        });
+
+        // Chuyển đổi chế độ Sáng/Tối
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            const body = document.body;
+            const isDarkMode = body.classList.toggle('dark-mode');
+
+            if (isDarkMode) {
+                document.getElementById('moonIcon').classList.add('hidden');
+                document.getElementById('sunIcon').classList.remove('hidden');
+            } else {
+                document.getElementById('moonIcon').classList.remove('hidden');
+                document.getElementById('sunIcon').classList.add('hidden');
+            }
+        });
+    </script>
+    <script src="js.js"></script>
+</body>
+</html>

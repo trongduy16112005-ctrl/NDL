@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nguyễn Trọng Phước - Profile</title>
+    <link rel="stylesheet" href="stylePhuoc.css">
+</head>
+<body>
+    <header>
+        <div class="intro">
+            <img src="hinh/anh1.png" alt="Ảnh đại diện" class="avatar">
+            <h1>Nguyễn Trọng Phước</h1>
+            <p class="subtitle">Năm 2 Đại học Bình Dương</p>
+        </div>
+    </header>
+
+    <section class="about section">
+        <h2>👋 Giới thiệu</h2>
+        <p>Xin chào! Mình là <strong>Nguyễn Trọng Phước</strong>, một sinh viên năm 2 đầy năng lượng với sở thích tập gym và khám phá những điều mới. Đây là trang cá nhân chill của mình 😎</p>
+    </section>
+
+    <section class="info section">
+        <h2>📌 Thông tin cá nhân</h2>
+        <ul>
+            <li><strong>Tên:</strong> Nguyễn Trọng Phước</li>
+            <li><strong>Trường:</strong> Đại học Bình Dương</li>
+            <li><strong>Sở thích:</strong> Gym</li>
+            <li><strong>SĐT:</strong> 0522528035</li>
+            <li><strong>Email:</strong> <a href="mailto:trongphuoc1062006@gmail.com">trongphuoc1062006@gmail.com</a></li>
+        </ul>
+    </section>
+
+    <section class="education section">
+        <h2>🎓 Học vấn</h2>
+        <p>Trung tâm giáo dục Phú Giáo (2020 - 2023)</p>
+    </section>
+
+    <section class="gallery section">
+        <h2>📸 Album</h2>
+        <div class="gallery-container">
+            <img src="hinh/anh2.jpeg" alt="Ảnh album 1">
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 Nguyễn Trọng Phước</p>
+    </footer>
+
+    <script>
+        // Hiệu ứng cuộn nhẹ
+        const sections = document.querySelectorAll('.section');
+        const options = { threshold: 0.2 };
+
+        const observer = new IntersectionObserver(function(entries, observer){
+            entries.forEach(entry => {
+                if(entry.isIntersecting){
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, options);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
